@@ -9,8 +9,9 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 /**
-   A frame that shows the growth of an investment with variable interest,
-   using a text area.
+ *
+ * Panel for user input
+ *
 */
 public class CommandPanel extends JFrame
 {
@@ -49,6 +50,13 @@ public class CommandPanel extends JFrame
       TextField.setText("");
    }
    
+   /**
+   *
+   * @author Sean Stewart
+   *
+   * Takes information input from user and passes to the printToPanel() method in the InfoPanel class
+   *
+   */
    class AddInputListener implements ActionListener {
 
 	@Override
