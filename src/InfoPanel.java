@@ -44,6 +44,13 @@ public class InfoPanel extends JFrame {
 		setSize(FRAME_WIDTH, FRAME_HEIGHT);
 	}
 	
+	/**
+	* 
+	* @author Sean_Stewart
+	*
+	* Method to print out user input to the Info Panel
+	*
+	*/
 	public static void printToPanel(String toPrint) {
 		infoArea.append("    "+toPrint + "\n");
 		if(count == 0) {
@@ -62,7 +69,14 @@ public class InfoPanel extends JFrame {
 			}
 		}
 	}
-
+	
+	/**
+	*
+	* @author Sean_Stewart
+	*
+	* Method to create the Info Panel
+	*
+	*/
 	private void createPanel() {
 		JPanel panel = new JPanel();
 		JScrollPane scrollPane = new JScrollPane(infoArea);
