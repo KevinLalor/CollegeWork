@@ -27,15 +27,14 @@ public class CommandPanel extends JFrame implements ActionListener
    private JLabel commandLabel;
    private JTextField commandField;
    private JButton commandButton;
-   private JTextArea resultSpace;
+   //private JTextArea resultSpace;
    
    public CommandPanel()
    {
 	   
-      resultSpace = new JTextArea(ROW_DIMENSION, COLUMN_DIMENSION);
-      
-      resultSpace.setEditable(false);
-            
+      //resultSpace = new JTextArea(ROW_DIMENSION, COLUMN_DIMENSION);
+      //resultSpace.setEditable(false);
+   
       createTextField();
       createButton();
       createPanel();
@@ -47,7 +46,7 @@ public class CommandPanel extends JFrame implements ActionListener
    private void createTextField() 
    {
 	   
-	  commandLabel = new JLabel("Enter Command: ");
+      commandLabel = new JLabel("Enter Command: ");
 
       final int width_of_textfield = 15;
       commandField = new JTextField(width_of_textfield);
