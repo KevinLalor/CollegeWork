@@ -1,4 +1,3 @@
-package softwareEngineeringProject;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -9,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 public class BoardPanel extends JPanel {
@@ -20,6 +20,7 @@ public class BoardPanel extends JPanel {
 	public BoardPanel()
 	{
 		setLayout(new BorderLayout());
+		setBorder(BorderFactory.createEtchedBorder());
 		
 		try 
 		{

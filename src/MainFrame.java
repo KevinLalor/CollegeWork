@@ -1,4 +1,3 @@
-package softwareEngineeringProject;
 
 import java.awt.BorderLayout;
 
@@ -7,6 +6,8 @@ import javax.swing.JFrame;
 public class MainFrame extends JFrame {
 	
 	private BoardPanel boardPanel;
+	private CommandPanel commandPanel;
+	private InfoPanel infoPanel;
 	
 	public MainFrame()
 	{
@@ -15,10 +16,20 @@ public class MainFrame extends JFrame {
 		setLayout(new BorderLayout());
 		
 		boardPanel = new BoardPanel();
+		commandPanel = new CommandPanel();
+		infoPanel = new InfoPanel();
+		
+		commandPanel.setStringListener(new StringListener() {
+			public void textEmitted(String text) {
+				infoPanel.printToPanel(text);
+			}		
+		});
 		
 		add(boardPanel, BorderLayout.CENTER);
+		add(commandPanel, BorderLayout.SOUTH);
+		add(infoPanel, BorderLayout.EAST);
 		
-		setSize(800, 538);
+		setSize(1200, 750);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 		

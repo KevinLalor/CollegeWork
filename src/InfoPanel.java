@@ -1,7 +1,6 @@
 /**
  * Written by Sean_Stewart
  */
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -15,9 +14,9 @@ import javax.swing.JTextField;
  *
  */
 
-public class InfoPanel extends JFrame {
-	private static final int FRAME_WIDTH = 400;
-	private static final int FRAME_HEIGHT = 700;
+public class InfoPanel extends JPanel {
+	// private static final int PANEL_WIDTH = 400;
+	// private static final int PANEL_HEIGHT = 700;
 	
 	private static final int AREA_ROWS = 40;
 	private static final int AREA_COLUMNS = 30;
@@ -26,7 +25,8 @@ public class InfoPanel extends JFrame {
 												"\tStart Menu\n"	+ 
 												"------------------------------------------------------\n" +
 												"    1.\tNew Game\n" +
-												"    2.\tExit\n";
+												"    2.\tExit\n" +
+												"    3.\tMove Checker\n";
 	
 	private JTextField infoField;
 	private static JTextArea infoArea;
@@ -41,7 +41,7 @@ public class InfoPanel extends JFrame {
 		
 		createPanel();
 		
-		setSize(FRAME_WIDTH, FRAME_HEIGHT);
+		// setSize(PANEL_WIDTH, PANEL_HEIGHT);
 	}
 	
 	/**
@@ -51,7 +51,7 @@ public class InfoPanel extends JFrame {
 	* Method to print out user input to the Info Panel
 	*
 	*/
-	public static void printToPanel(String toPrint) {
+	public void printToPanel(String toPrint) {
 		infoArea.append("    "+toPrint + "\n");
 		if(count == 0) {
 			int input = Integer.parseInt(toPrint);
@@ -62,6 +62,10 @@ public class InfoPanel extends JFrame {
 				break;
 			case 2:
 				// Call exit function
+				if ( toPrint.equals("Exit") || toPrint == "exit" || toPrint.equals("EXIT") || toPrint.equals("2") )
+			       {
+			    	   System.exit(0);
+			       }
 				count++;
 				break;
 			default:
@@ -78,10 +82,8 @@ public class InfoPanel extends JFrame {
 	*
 	*/
 	private void createPanel() {
-		JPanel panel = new JPanel();
 		JScrollPane scrollPane = new JScrollPane(infoArea);
-		panel.add(scrollPane);
-		add(panel);
+		add(scrollPane);
 	}
 	
 

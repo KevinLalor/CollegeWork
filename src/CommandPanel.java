@@ -1,5 +1,7 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -11,17 +13,19 @@ import javax.swing.JTextField;
 /**
    Frame For CommandPanel + Action listner for commands.
 */
-public class CommandPanel extends JFrame implements ActionListener
+public class CommandPanel extends JPanel implements ActionListener
 {
 	
    //Constants 
-   private static final int WIDTH_OF_FRAME = 400;
-   private static final int HEIGHT_OF_FRAME = 300;
+   // private static final int WIDTH_OF_PANEL = 400;
+   // private static final int HEIGHT_OF_PANEL = 300;
    private static final int ROW_DIMENSION = 10;
-   private static final int COLUMN_DIMENSION = 30;
+   private static final int COLUMN_DIMENSION = 30; 
     
    //inputs
    private String userInput;
+   //Listener
+   private StringListener textListener;
    
    //Client
    private JLabel commandLabel;
@@ -34,12 +38,13 @@ public class CommandPanel extends JFrame implements ActionListener
 	   
       //resultSpace = new JTextArea(ROW_DIMENSION, COLUMN_DIMENSION);
       //resultSpace.setEditable(false);
-   
+	  setBorder(BorderFactory.createEtchedBorder());
+	   
       createTextField();
       createButton();
       createPanel();
 
-      setSize(WIDTH_OF_FRAME, HEIGHT_OF_FRAME);
+      // setSize(WIDTH_OF_PANEL, HEIGHT_OF_PANEL);
       
    }
 
@@ -55,18 +60,18 @@ public class CommandPanel extends JFrame implements ActionListener
       
    }
    
+   public void setStringListener(StringListener listener)
+   {
+	   this.textListener = listener;
+   }
+   
    public void actionPerformed(ActionEvent e) 
    {
 	   
        userInput = commandField.getText();
        //resultSpace.setText("This is  the User input: " + userInput + "\n");
        commandField.setText("");
-       InfoPanel.printToPanel(userInput);
-       
-       if ( userInput.equals("Exit") || userInput.equals("exit") || userInput.equals("EXIT") || userInput.equals("2") )
-       {
-    	   System.exit(0) ;
-       }
+       textListener.textEmitted(userInput);
        
    }
    
@@ -81,13 +86,11 @@ public class CommandPanel extends JFrame implements ActionListener
    private void createPanel()
    {
 	   
-      JPanel panel = new JPanel();
-      panel.add(commandLabel);
-      panel.add(commandField);
-      panel.add(commandButton);
-      JScrollPane scrollPane = new JScrollPane(resultSpace);
-      panel.add(scrollPane);      
-      add(panel);
+      add(commandLabel);
+      add(commandField);
+      add(commandButton);
+      // JScrollPane scrollPane = new JScrollPane();
+      // add(scrollPane);      
       
    }
    
