@@ -9,27 +9,29 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 /**
- *
- * Panel for user input
- *
+   Frame For CommandPanel + Action listner for commands.
 */
-public class CommandPanel extends JFrame
+public class CommandPanel extends JFrame implements ActionListener
 {
-   private static final int Width_Of_Frame = 500;
-   private static final int Height_Of_Frame = 500;
-   
+	
+   //Constants 
+   private static final int WIDTH_OF_FRAME = 400;
+   private static final int HEIGHT_OF_FRAME = 300;
    private static final int ROW_DIMENSION = 10;
    private static final int COLUMN_DIMENSION = 30;
-     
-   private JLabel CommandLabel;
-   private JTextField TextField;
-   private JButton button;
+    
+   //inputs
+   private String userInput;
+   
+   //Client
+   private JLabel commandLabel;
+   private JTextField commandField;
+   private JButton commandButton;
    private JTextArea resultSpace;
    
- 
    public CommandPanel()
-   {  
-      
+   {
+	   
       resultSpace = new JTextArea(ROW_DIMENSION, COLUMN_DIMENSION);
       
       resultSpace.setEditable(false);
@@ -38,55 +40,58 @@ public class CommandPanel extends JFrame
       createButton();
       createPanel();
 
-      setSize(Width_Of_Frame, Height_Of_Frame);
+      setSize(WIDTH_OF_FRAME, HEIGHT_OF_FRAME);
+      
    }
 
-   private void createTextField()
+   private void createTextField() 
    {
-	  CommandLabel = new JLabel("Enter Command: ");
-
-      final int Width_Of_TextField = 15;
-      TextField = new JTextField(Width_Of_TextField);
-      TextField.setText("");
-   }
-   
-   /**
-   *
-   * @author Sean Stewart
-   *
-   * Takes information input from user and passes to the printToPanel() method in the InfoPanel class
-   *
-   */
-   class AddInputListener implements ActionListener {
-
-	@Override
-	public void actionPerformed(ActionEvent event) {
-		String input = TextField.getText();
-		InfoPanel.printToPanel(input);
-	}
 	   
+	  commandLabel = new JLabel("Enter Command: ");
+
+      final int width_of_textfield = 15;
+      commandField = new JTextField(width_of_textfield);
+      commandField.setText("");
+      commandField.addActionListener(this);
+      
    }
    
-   
-
-   private void createButton()
+   public void actionPerformed(ActionEvent e) 
    {
-      button = new JButton("Enter");      
-      
-      ActionListener listener = new AddInputListener();
-      button.addActionListener(listener);
-      
+	   
+       userInput = commandField.getText();
+       //resultSpace.setText("This is  the User input: " + userInput + "\n");
+       commandField.setText("");
+       InfoPanel.printToPanel(userInput);
+       
+       if ( userInput.equals("Exit") || userInput.equals("exit") || userInput.equals("EXIT") || userInput.equals("2") )
+       {
+    	   System.exit(0) ;
+       }
+       
    }
    
+   private void createButton()  
+   {
+	   
+      commandButton  = new JButton("Enter");
+      commandButton.addActionListener(this);
 
+   }
+ 
    private void createPanel()
    {
+	   
       JPanel panel = new JPanel();
-      panel.add(CommandLabel);
-      panel.add(TextField);
-      panel.add(button);
+      panel.add(commandLabel);
+      panel.add(commandField);
+      panel.add(commandButton);
       JScrollPane scrollPane = new JScrollPane(resultSpace);
       panel.add(scrollPane);      
       add(panel);
+      
    }
+   
 }
+
+
