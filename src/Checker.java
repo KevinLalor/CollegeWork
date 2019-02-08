@@ -7,20 +7,22 @@ import java.awt.geom.Ellipse2D;
 
 public class Checker {
 	
-	public Color color;
+	private Color colour, outline;
+	private int x, y;
+	Graphics g;
 	
-	
-	public Checker(Color col)
+	public Checker(Color col, Color outline, Graphics g, int x, int y)
 	{
-		this.color = col;
-	}
-	
-	public void moveChecker()
-	{
+		this.colour = col;
+		this.outline = outline;
+		this.g = g;
+		this.x = x;
+		this.y = y;
 		
+		paintChecker(g, x, y);
 	}
 	
-	public void drawChecker(int x, int y, Graphics g, Color colour, Color outline)
+	public void paintChecker(Graphics g, int x, int y)
 	{
 		Graphics2D g2 = (Graphics2D) g;
 
@@ -29,7 +31,11 @@ public class Checker {
 		g2.draw(circle);
 		g2.setColor(colour);
 		g2.fill(circle);
-		
 	}
 	
+	public void moveChecker()
+	{ 
+		paintChecker(g, x, y);
+	} 
+
 }
