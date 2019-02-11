@@ -26,6 +26,7 @@ public class CommandPanel extends JPanel implements ActionListener
    private String userInput;
    //Listener
    private StringListener textListener;
+   // private KeyListener keyListener;
    
    //Client
    private JLabel commandLabel;
@@ -64,6 +65,11 @@ public class CommandPanel extends JPanel implements ActionListener
    {
 	   this.textListener = listener;
    }
+   
+   /* public void setKeyListener(KeyListener listener)
+   {
+	   this.addKeyListener = listener;
+   } */
    
    public void actionPerformed(ActionEvent e) 
    {

@@ -31,7 +31,7 @@ public class InfoPanel extends JPanel {
 	private JTextField infoField;
 	private static JTextArea infoArea;
 	private String text;
-	private static int count = 0;
+	// private static int count = 0;
 	
 	public InfoPanel() {
 		text = INITIAL_TEXT;
@@ -53,12 +53,12 @@ public class InfoPanel extends JPanel {
 	*/
 	public void printToPanel(String toPrint) {
 		infoArea.append("    "+toPrint + "\n");
-		if(count == 0) {
+		//if(count == 0) {
 			int input = Integer.parseInt(toPrint);
 			switch (input) {
 			case 1:
 				// Call setup board function
-				count++;
+				//count++;
 				break;
 			case 2:
 				// Call exit function
@@ -66,12 +66,15 @@ public class InfoPanel extends JPanel {
 			       {
 			    	   System.exit(0);
 			       }
-				count++;
+				//count++; 
+				break;
+			case 3:
+				System.out.println("3 inputted");
 				break;
 			default:
 				throw new IllegalArgumentException("Invalid Entry: " + toPrint);
 			}
-		}
+		//}
 	}
 	
 	/**

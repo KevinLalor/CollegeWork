@@ -14,13 +14,16 @@ import javax.swing.JPanel;
 public class BoardPanel extends JPanel {
 	
 	private BufferedImage boardImage;
-	private Checker[] whiteCheckers = new Checker[15];
-	private Checker[] blackCheckers = new Checker[15];
+	public Checker[] whiteCheckers = new Checker[15];
+	public Checker[] blackCheckers = new Checker[15];
+	public Checker currentChecker;
 	
 	public BoardPanel()
 	{
 		setLayout(new BorderLayout());
 		setBorder(BorderFactory.createEtchedBorder());
+		
+		currentChecker = whiteCheckers[0];
 		
 		try 
 		{
@@ -30,7 +33,7 @@ public class BoardPanel extends JPanel {
 		{
 			System.out.println("Could not find the image file " + ex.toString());
 		}
-		
+			
 	} 
 	
 	public void paintComponent(Graphics g)
