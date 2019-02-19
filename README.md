@@ -1,6 +1,6 @@
 # GackBammon
 Sprint 2:
-Starting code from Sprint 1 solutions
+Starting code taken from Sprint 1 solutions
 
 Objectives:
 - Announce game
