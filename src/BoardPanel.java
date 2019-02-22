@@ -33,7 +33,7 @@ class BoardPanel extends JPanel {
         }
     }
 
-
+    // Displays the checker in its normal circle
     private void displayChecker (int player, int x, int y) {
         g2.setColor(Color.BLACK);
         Ellipse2D.Double ellipseBlack = new Ellipse2D.Double(x,y,2*CHECKER_RADIUS,2*CHECKER_RADIUS);
@@ -43,7 +43,7 @@ class BoardPanel extends JPanel {
         g2.fill(ellipseColour);
     }
 
-
+    // Displays the checker in its bear off form
     private void displayCheckerSide (int player, int x, int y) {
         g2.setColor(Color.BLACK);
         Rectangle2D.Double rectangleBlack = new Rectangle2D.Double(x,y,2*CHECKER_RADIUS,CHECKER_DEPTH);
@@ -60,7 +60,7 @@ class BoardPanel extends JPanel {
         g2.drawImage(boardImage, 0, 0, FRAME_WIDTH, FRAME_HEIGHT, this);
         for (int player=0; player<Backgammon.NUM_PLAYERS; player++) {
             int x,y;
-            // Display Pip Numbers
+            // Display pip numbers for player 1
             for (int pip=1; pip<=Board.NUM_PIPS; pip++) {
                 if (pip>3*Board.NUM_PIPS/4) {
                     x = FRAME_WIDTH/2 + BAR_WIDTH/2 + (pip-3*Board.NUM_PIPS/4-1)*PIP_WIDTH+PIP_WIDTH/4;
@@ -72,13 +72,35 @@ class BoardPanel extends JPanel {
                     x = FRAME_WIDTH/2 + BAR_WIDTH/2 + (Board.NUM_PIPS/4-pip)*PIP_WIDTH+PIP_WIDTH/4;
                 }
                 if (pip>Board.NUM_PIPS/2) {
-                    y = 3*BORDER_TOP/4;
+                    y = BORDER_TOP-5;
                 } else {
-                    y = FRAME_HEIGHT-BORDER_BOTTOM/4;
+                    y = (FRAME_HEIGHT-BORDER_BOTTOM/4)-7;
                 }
-                g2.setColor(Color.WHITE);
+                g2.setColor(Color.RED);
                 g2.setFont(new Font("Courier",Font.BOLD,16));
                 g2.drawString(Integer.toString(pip),x,y);
+            }
+            // Display pip numbers for player 2
+            int num=24;
+            for (int pip=1; pip<=Board.NUM_PIPS; pip++) {
+                if (pip>3*Board.NUM_PIPS/4) {
+                    x = FRAME_WIDTH/2 + BAR_WIDTH/2 + (pip-3*Board.NUM_PIPS/4-1)*PIP_WIDTH+PIP_WIDTH/4;
+                } else if (pip>Board.NUM_PIPS/2) {
+                    x = BORDER_LEFT + (pip-Board.NUM_PIPS/2-1)*PIP_WIDTH+PIP_WIDTH/4;
+                } else if (pip>Board.NUM_PIPS/4) {
+                    x = BORDER_LEFT + (Board.NUM_PIPS/2-pip)*PIP_WIDTH+PIP_WIDTH/4;
+                } else {
+                    x = FRAME_WIDTH/2 + BAR_WIDTH/2 + (Board.NUM_PIPS/4-pip)*PIP_WIDTH+PIP_WIDTH/4;
+                }
+                if (pip>Board.NUM_PIPS/2) {
+                    y = BORDER_TOP-21;
+                } else {
+                    y = (FRAME_HEIGHT-BORDER_BOTTOM/4)+11;
+                }
+                g2.setColor(Color.GREEN);
+                g2.setFont(new Font("Courier",Font.BOLD,16));
+                g2.drawString(Integer.toString(num),x,y);
+                num--;
             }
             // Display Bar
             for (int count=1; count<=board.getNumCheckers(player, Board.BAR); count++) {
