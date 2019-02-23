@@ -44,6 +44,11 @@ public class UI {
     public int rollDice() {
     	rollDicePanel.right.roll();
     	rollDicePanel.left.roll();
-    	return rollDicePanel.right.getValue() + rollDicePanel.left.getValue();
+    	if (rollDicePanel.right.roll() == rollDicePanel.left.roll()){
+    		return rollDicePanel.left.roll() + rollDicePanel.left.roll() + rollDicePanel.left.roll() + rollDicePanel.left.roll();
+    	}
+    	else {
+    		return rollDicePanel.right.getValue() + rollDicePanel.left.getValue();
+    	}
     }
 }
