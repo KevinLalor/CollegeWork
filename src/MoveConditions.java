@@ -6,6 +6,7 @@
  *
  */
 public class MoveConditions {
+	InfoPanel info = new InfoPanel();
 	
 	public boolean condsMet = true;		
 
@@ -69,7 +70,7 @@ public class MoveConditions {
 			break;
 			
 		default:
-			InfoPanel.addText("Invalid input! Please re-enter!");
+			info.addText("Invalid input! Please re-enter!");
 			break;
 		}
 		return condsMet;
@@ -81,11 +82,11 @@ public class MoveConditions {
 			if(start > end)
 				condsMet = true;
 			else {
-				InfoPanel.addText("Starting position must be greater than the end position! Please re-enter!");
+				info.addText("Starting position must be greater than the end position! Please re-enter!");
 				condsMet = false;
 			}
 		else {
-			InfoPanel.addText("Invalid numbers given! Please re-enter!");
+			info.addText("Invalid numbers given! Please re-enter!");
 			condsMet = false;
 		}
 			
