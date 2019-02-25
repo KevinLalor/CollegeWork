@@ -7,16 +7,10 @@
  */
 public class MoveConditions {
 	
-	public static boolean condsMet;		
-	
-	public static void main(String moveInput) {
-		String s = moveInput;
-		
-		checkFormat(s);
-	}
+	public boolean condsMet = true;		
 
 	// Function for checking the format of the input given by the user.
-	private static void checkFormat(String s) {
+	public boolean checkFormat(String s) {
 		char tmp1, tmp2;	// Temporary variables to store chars of the user input given.
 		int start, end;		// Variables that will be given the start and end position of the pip.
 		
@@ -69,6 +63,8 @@ public class MoveConditions {
 				tmp1 = s.charAt(2);
 				tmp2 = s.charAt(3);
 				end = 10*(Character.getNumericValue(tmp1)) + Character.getNumericValue(tmp2);
+				
+				checkNum(start, end);
 			}
 			break;
 			
@@ -76,18 +72,22 @@ public class MoveConditions {
 			InfoPanel.addText("Invalid input! Please re-enter!");
 			break;
 		}
+		return condsMet;
 	}
 	
 	// Function to check if the numbers given in the input are valid
-	private static void checkNum(int start, int end) {
+	private void checkNum(int start, int end) {
 		if(start >= 0 && start <= 25 && end >= 0 && end <= 25)
-			condsMet = true;
-		else
+			if(start > end)
+				condsMet = true;
+			else {
+				InfoPanel.addText("Starting position must be greater than the end position! Please re-enter!");
+				condsMet = false;
+			}
+		else {
 			InfoPanel.addText("Invalid numbers given! Please re-enter!");
-	}
-	
-	// Function to check the range of the input given is valid
-	private static void checkRange(int start, int end) {
-		
+			condsMet = false;
+		}
+			
 	}
 }
