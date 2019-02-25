@@ -7,8 +7,8 @@ import java.util.Random;
 public class RollDicePanel extends JPanel{
 	
 	//Dice
-	private die right;
-	private die left;
+	public die right;
+	public die left;
 	//end of instance variables
 	
 	// bordr layout panel with two die's and one button
