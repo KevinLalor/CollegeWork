@@ -48,6 +48,23 @@ public class Backgammon {
         Command command;
         boolean rollDice = false;
         do {
+        	if (ui.getString() == "cheat")
+        	{
+        		ui.promptCommand(players.getCurrent());
+        		command = ui.getCommand();
+                ui.displayString("> " + command);
+                
+                if (command.isMove()) {
+                    board.move(players.getCurrent(),command.getFromPip(),command.getToPip());
+                    ui.display();
+                }
+                else if (command.isNext()) {
+                    players.next();
+                    ui.display();
+                    rollDice = true;
+                }
+        		
+        	}
             if (rollDice) {
                 dice.rollDice();
                 ui.displayRoll(players.getCurrent(), dice);
