@@ -1,7 +1,7 @@
 class Dice {
 
     private boolean oneDieRoll;
-    private int[] dice;
+    public int[] dice;
     private int die, previousDie;
 
     Dice() {
@@ -11,10 +11,11 @@ class Dice {
         previousDie = 1;
     }
 
-    public void rollDie() {
+    public int rollDie() {
         previousDie = die;
         die = 1 + (int)(Math.random()*6);
         oneDieRoll = true;
+        return die;
     }
 
     public void rollDice() {
