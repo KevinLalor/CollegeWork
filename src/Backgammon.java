@@ -18,6 +18,16 @@ public class Backgammon {
             ui.displayPlayerColor(player);
         }
     }
+    //new code
+    private void getPointsToWin() {
+    	
+    	String number = ui.getString();
+    	int PointsToWin = Integer.parseInt(number);
+    	System.out.println("Points to win = " + PointsToWin);
+    	
+    }
+    
+   
 
     private void rollToStart() {
         do {
@@ -78,6 +88,9 @@ public class Backgammon {
         ui.display();
         ui.displayStartOfGame();
         getPlayerNames();
+        ui.promptPointsToWin();
+        //new code
+        getPointsToWin();
         rollToStart();
         takeTurns();
         if (board.isGameOver()) {

@@ -50,10 +50,17 @@ public class UI {
     public void displayPlayerColor(Player player) {
         displayString(player + " uses " + player.getColorName() + " checkers.");
     }
+    
+    //new code , amount of points to win
+    public void promptPointsToWin() {
+    	displayString("How many points would you like to play to:");
+    }
 
+    
     public void displayRoll(Player player) {
         displayString(player + " (" + player.getColorName() + ") rolls " + player.getDice());
     }
+
 
     public void displayDiceEqual() {
         displayString("Equal. Roll again");
