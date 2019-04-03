@@ -53,8 +53,13 @@ public class UI {
     
     //new code , amount of points to win
     public void promptPointsToWin() {
-    	displayString("How many points would you like to play to:");
+    	displayString("How many points would you like to play to?");
     }
+    
+    //displays pints to win before starting first game
+    //public void displayPointsToWin(Player player) {
+    //    displayString(player + " uses " + player.getColorName() + " checkers.");
+    //}
 
     
     public void displayRoll(Player player) {
@@ -72,6 +77,10 @@ public class UI {
 
     public void displayGameWinner(Player player) {
         displayString(player + " WINS THE GAME!!!");
+    }
+    
+    public void promptPlayAgain() {
+    	displayString("Would you like to play again?");
     }
 
     public void promptCommand(Player player) {

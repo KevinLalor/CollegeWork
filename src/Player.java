@@ -8,6 +8,8 @@ public class Player {
     private Color color;
     private String name;
     private Dice dice;
+    //holds score for each player
+    private int score;
 
     Player(int id, String colorName, Color color) {
         this.id = id;
@@ -45,5 +47,13 @@ public class Player {
 
     public String toString() {
         return name;
+    }
+    
+    public int getScore() {
+    	return score;
+    }
+   
+    public void increaseScore() {
+    	score += Backgammon.gamePoint;
     }
 }

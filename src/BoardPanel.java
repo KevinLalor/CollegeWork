@@ -52,13 +52,16 @@ class   BoardPanel extends JPanel {
         g2.setColor(checkerColors[player]);
         g2.fill(rectangleColour);
     }
+    //match score display
+    
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g2 =(Graphics2D) g;
         g2.drawImage(boardImage, 0, 0, FRAME_WIDTH, FRAME_HEIGHT, this);
+        int x,y;
         for (int player=0; player<Backgammon.NUM_PLAYERS; player++) {
-            int x,y;
+            
             // Display Pip Numbers
             for (int pip=1; pip<=Board.NUM_PIPS; pip++) {
                 if (pip>3*Board.NUM_PIPS/4) {
@@ -123,9 +126,11 @@ class   BoardPanel extends JPanel {
                 }
                 displayCheckerSide(player,x,y);
             }
+            
+        	} 
 
         }
-    }
+     
 
     public void refresh() {
         revalidate();

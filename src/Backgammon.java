@@ -4,6 +4,8 @@ public class Backgammon {
     // This is the main class for the Backgammon game. It orchestrates the running of the game.
 
     public static final int NUM_PLAYERS = 2;
+    public static int  matchPoint = 0;
+    public static int gamePoint = 1;
 
     private final Players players = new Players();
     private final Board board = new Board(players);
@@ -19,12 +21,13 @@ public class Backgammon {
         }
     }
     //new code
-    private void getPointsToWin() {
+    private int getPointsToWin() {
     	
+    	ui.promptPointsToWin();
     	String number = ui.getString();
-    	int PointsToWin = Integer.parseInt(number);
-    	System.out.println("Points to win = " + PointsToWin);
-    	
+        matchPoint = Integer.parseInt(number);
+    	ui.displayString("Points to win = " + number);
+    	return matchPoint;
     }
     
    
@@ -88,14 +91,41 @@ public class Backgammon {
         ui.display();
         ui.displayStartOfGame();
         getPlayerNames();
-        ui.promptPointsToWin();
         //new code
         getPointsToWin();
         rollToStart();
         takeTurns();
         if (board.isGameOver()) {
             ui.displayGameWinner(board.getWinner());
+            gamePoint = 1;
+            if(board.getWinner() == players.get(0)){
+            	players.get(0).increaseScore();
+            }
+            else {
+            	players.get(1).increaseScore();
+            }
             TimeUnit.SECONDS.sleep(10);
+        }
+        if(board.isMatchOver(players)) {
+        	String choice = "";
+        	boolean validAnswer = false;
+        	while(validAnswer == false) {
+        		ui.promptPlayAgain();
+        		choice = ui.getString();
+        		if(choice == "yes" || choice == "Yes")
+        		{
+        			play();
+        			validAnswer = true;
+        		}
+        		else if (choice == "no" || choice == "No")
+        		{
+        			System.exit(0);
+        		}
+        		else 
+        		{
+        			ui.displayString("Invalid choice, please answer again");
+        		}
+        	}
         }
     }
 

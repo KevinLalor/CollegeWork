@@ -2,7 +2,6 @@ public class Board {
     // Board hold the details for the current board positions, performs moves and returns the list of legal moves
 
     private static final int[] RESET = {0,0,0,0,0,0,5,0,3,0,0,0,0,5,0,0,0,0,0,0,0,0,0,0,2,0};
-    // Modified cheat array
     private static final int[][] CHEAT = {
               {15,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},   // Bear in & Bear off test
               {15,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -177,6 +176,15 @@ public class Board {
             gameOver = true;
         }
         return gameOver;
+    }
+    
+    public boolean isMatchOver(Players players) {
+    	boolean matchOver = false;
+    	if (players.get(0).getScore() >= Backgammon.matchPoint || players.get(1).getScore() >= Backgammon.matchPoint ) {
+    		matchOver = true;
+    	}
+    	return matchOver;
+    	
     }
 
     public Player getWinner() {
