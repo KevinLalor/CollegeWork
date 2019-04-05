@@ -6,6 +6,7 @@ public class Backgammon {
     public static final int NUM_PLAYERS = 2;
     public static int  matchPoint = 0;
     public static int gamePoint = 1;
+    private static int gameCount = 0;
 
     private final Players players = new Players();
     private final Board board = new Board(players);
@@ -27,6 +28,7 @@ public class Backgammon {
     	String number = ui.getString();
         matchPoint = Integer.parseInt(number);
     	ui.displayString("Points to win = " + number);
+    	System.out.println(matchPoint);
     	return matchPoint;
     }
     
@@ -89,22 +91,29 @@ public class Backgammon {
     private void play() throws InterruptedException {
 //        board.setUI(ui);
         ui.display();
-        ui.displayStartOfGame();
-        getPlayerNames();
-        //new code
-        getPointsToWin();
+        if(gameCount == 0)
+        {
+        	ui.displayStartOfGame();
+            getPlayerNames();
+            //new code
+            getPointsToWin();
+        }
         rollToStart();
         takeTurns();
         if (board.isGameOver()) {
             ui.displayGameWinner(board.getWinner());
             gamePoint = 1;
-            if(board.getWinner() == players.get(0)){
+            gameCount++;
+            if(board.getWinner() == players.get(0)) {
             	players.get(0).increaseScore();
             }
             else {
             	players.get(1).increaseScore();
             }
-            TimeUnit.SECONDS.sleep(10);
+            TimeUnit.SECONDS.sleep(5);
+            board.reset();
+            ui.updateScore(players);
+            play();
         }
         if(board.isMatchOver(players)) {
         	String choice = "";
@@ -114,6 +123,7 @@ public class Backgammon {
         		choice = ui.getString();
         		if(choice == "yes" || choice == "Yes")
         		{
+        			gamePoint = 1;
         			play();
         			validAnswer = true;
         		}

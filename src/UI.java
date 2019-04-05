@@ -11,15 +11,18 @@ public class UI {
     private final BoardPanel boardPanel;
     private final InfoPanel infoPanel;
     private final CommandPanel commandPanel;
+    private final ScorePanel scorePanel;
 
     UI (Board board, Players players) {
         infoPanel = new InfoPanel();
         commandPanel = new CommandPanel();
         JFrame frame = new JFrame();
         boardPanel = new BoardPanel(board,players);
+        scorePanel = new ScorePanel();
         frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
         frame.setTitle("Backgammon");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.add(scorePanel, BorderLayout.PAGE_START);
         frame.add(boardPanel, BorderLayout.LINE_START);
         frame.add(infoPanel, BorderLayout.LINE_END);
         frame.add(commandPanel, BorderLayout.PAGE_END);
@@ -122,5 +125,12 @@ public class UI {
     public void displayForcedMove(Player player) throws InterruptedException {
         displayString(player + " has a forced move.");
         TimeUnit.SECONDS.sleep(1);
+    }
+    
+    public void updateScore(Players players)
+    {
+    	Player one = players.get(0);
+    	Player two = players.get(1);
+    	scorePanel.score.setText("Player 1 Score: " + one.getScore() + " | Player 2 Score: " + two.getScore());
     }
 }

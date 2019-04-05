@@ -204,5 +204,14 @@ public class Board {
             }
         }
     }
+    
+    public void reset()
+    {
+    	for (int player=0; player<Backgammon.NUM_PLAYERS; player++)  {
+            for (int pip=0; pip<NUM_SLOTS; pip++)   {
+                checkers[player][pip] = RESET[pip];
+            }
+        }
+    }
 
 }

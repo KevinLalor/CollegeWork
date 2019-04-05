@@ -13,16 +13,22 @@ class   BoardPanel extends JPanel {
     private static final int BORDER_TOP = 40, BORDER_BOTTOM = 75, BORDER_LEFT = 66, BORDER_RIGHT = 60;
     private static final int PIP_WIDTH = 47, BAR_WIDTH = 66;
     private static final int CHECKER_RADIUS = 16, CHECKER_DEPTH = 8, LINE_WIDTH = 2;   // must be even
-
+    
     private Color[] checkerColors;
     private Board board;
     private Players players;
     private BufferedImage boardImage;
     private Graphics2D g2;
+    
+    private JLabel score;
 
     BoardPanel(Board board, Players players) {
         this.board = board;
         this.players = players;
+        score = new JLabel();
+        score.setBounds(10, 10, 50, 40);
+        score.setText("Text");
+        score.setVisible(true);
         checkerColors = new Color[Players.NUM_PLAYERS];
         checkerColors[0] = players.get(0).getColor();
         checkerColors[1] = players.get(1).getColor();
@@ -52,8 +58,6 @@ class   BoardPanel extends JPanel {
         g2.setColor(checkerColors[player]);
         g2.fill(rectangleColour);
     }
-    //match score display
-    
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
