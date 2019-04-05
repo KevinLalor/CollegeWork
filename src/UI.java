@@ -134,4 +134,13 @@ public class UI {
     	scorePanel.score.setText("Player 1 Score: " + one.getScore() + " | Player 2 Score: " + two.getScore()
     							+ " | Game Point: " + Backgammon.gamePoint + " | Match Point: " + Backgammon.matchPoint);
     }
+    
+    // New Code - Sean
+    public void offerDoubleCube(Player player) {
+    	displayString(player +", would you like to offer the Double Cube?");
+    }
+    
+    public void promptDoubleCube(Player player) {
+    	displayString(player + ", do you accept the offer of the Double Cube?");
+    }
 }
