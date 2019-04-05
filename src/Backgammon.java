@@ -107,7 +107,7 @@ public class Backgammon {
       ui.display();
       if(gameCount == 0)
       {
-      	ui.displayStartOfGame();
+    	  ui.displayStartOfGame();
           getPlayerNames();
           //new code
           getPointsToWin();
@@ -190,7 +190,8 @@ public class Backgammon {
         }
         
         if(DoubleCube) {
-        	 DoubleCube(players.next());
+        	if(players.hasNext())
+        		DoubleCube(players.next());
         }
         ui.display();
     }
