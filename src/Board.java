@@ -180,7 +180,7 @@ public class Board {
     
     public boolean isMatchOver(Players players) {
     	boolean matchOver = false;
-    	if (players.get(0).getScore() >= Backgammon.matchPoint || players.get(1).getScore() >= Backgammon.matchPoint ) {
+    	if (players.get(0).getScore() >= Backgammon.matchPoint-1 || players.get(1).getScore() >= Backgammon.matchPoint-1 ) {
     		matchOver = true;
     	}
     	return matchOver;

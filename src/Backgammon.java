@@ -97,10 +97,11 @@ public class Backgammon {
             getPlayerNames();
             //new code
             getPointsToWin();
+            ui.updateScore(players);
         }
         rollToStart();
         takeTurns();
-        if (board.isGameOver()) {
+        if (board.isGameOver() && !(board.isMatchOver(players))) {
             ui.displayGameWinner(board.getWinner());
             gamePoint = 1;
             gameCount++;
@@ -116,18 +117,28 @@ public class Backgammon {
             play();
         }
         if(board.isMatchOver(players)) {
+        	if(board.getWinner() == players.get(0)) {
+            	players.get(0).increaseScore();
+            }
+            else {
+            	players.get(1).increaseScore();
+            }
+        	ui.updateScore(players);
+        	System.out.println("Match is over");
         	String choice = "";
         	boolean validAnswer = false;
         	while(validAnswer == false) {
         		ui.promptPlayAgain();
         		choice = ui.getString();
-        		if(choice == "yes" || choice == "Yes")
+        		ui.displayString("> " + choice);
+        		if(choice.equals("yes") || choice.equals("Yes"))
         		{
         			gamePoint = 1;
+        			board.reset();
         			play();
         			validAnswer = true;
         		}
-        		else if (choice == "no" || choice == "No")
+        		else if (choice.equals("no") || choice.equals("No"))
         		{
         			System.exit(0);
         		}

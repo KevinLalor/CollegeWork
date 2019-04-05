@@ -131,6 +131,7 @@ public class UI {
     {
     	Player one = players.get(0);
     	Player two = players.get(1);
-    	scorePanel.score.setText("Player 1 Score: " + one.getScore() + " | Player 2 Score: " + two.getScore());
+    	scorePanel.score.setText("Player 1 Score: " + one.getScore() + " | Player 2 Score: " + two.getScore()
+    							+ " | Game Point: " + Backgammon.gamePoint + " | Match Point: " + Backgammon.matchPoint);
     }
 }
