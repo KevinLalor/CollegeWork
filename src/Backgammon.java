@@ -217,7 +217,6 @@ public class Backgammon {
     			}
     		}
     }
-    
 
     public static void main(String[] args) throws InterruptedException {
         Backgammon game = new Backgammon();

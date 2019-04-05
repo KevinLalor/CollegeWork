@@ -12,7 +12,8 @@ class   BoardPanel extends JPanel {
     private static final int FRAME_WIDTH = 752, FRAME_HEIGHT = 552;  // must be multiples of 4
     private static final int BORDER_TOP = 40, BORDER_BOTTOM = 75, BORDER_LEFT = 66, BORDER_RIGHT = 60;
     private static final int PIP_WIDTH = 47, BAR_WIDTH = 66;
-    private static final int CHECKER_RADIUS = 16, CHECKER_DEPTH = 8, LINE_WIDTH = 2;   // must be even
+    private static final int CHECKER_RADIUS = 16, CHECKER_DEPTH = 8, LINE_WIDTH = 2;  // must be even
+    private static final int DOUBLING_CUBE_WIDTH = 32, DOUBLING_CUBE_HEIGHT = 32;
     
     private Color[] checkerColors;
     private Board board;
@@ -48,6 +49,17 @@ class   BoardPanel extends JPanel {
         Ellipse2D.Double ellipseColour = new Ellipse2D.Double(x+LINE_WIDTH,y+LINE_WIDTH,2*(CHECKER_RADIUS-LINE_WIDTH),2*(CHECKER_RADIUS-LINE_WIDTH));
         g2.setColor(checkerColors[player]);
         g2.fill(ellipseColour);
+    }
+    
+    private void displayDoublingCube(int x, int y, int number)
+    {
+    	g2.setColor(Color.BLACK);
+    	g2.fillRect(x, y, DOUBLING_CUBE_WIDTH, DOUBLING_CUBE_HEIGHT);
+    	g2.setColor(Color.WHITE);
+    	g2.fillRect(x+2, y+2, DOUBLING_CUBE_WIDTH-(LINE_WIDTH+2), DOUBLING_CUBE_HEIGHT-(LINE_WIDTH+2));
+    	g2.setColor(Color.BLACK);
+    	g2.setFont(new Font("Courier",Font.BOLD,32));
+    	g2.drawString(Integer.toString(number), x+7, y+25);
     }
 
     private void displayCheckerSide (int player, int x, int y) {
@@ -129,6 +141,21 @@ class   BoardPanel extends JPanel {
                     y = BORDER_TOP + (count-1)*CHECKER_DEPTH;
                 }
                 displayCheckerSide(player,x,y);
+            }
+            // Display doubling cube
+            displayDoublingCube(361, 260, 2);
+            if(Backgammon.gamePoint > 1)
+            {
+            	if(Backgammon.gamePoint==2)
+            		displayDoublingCube(361, 260, 2);
+            	else if(Backgammon.gamePoint == 4)
+            		displayDoublingCube(361, 260, 4);
+            	else if(Backgammon.gamePoint == 8)
+            		displayDoublingCube(361, 260, 8);
+            	else if(Backgammon.gamePoint == 16)
+            		displayDoublingCube(361, 260, 16);
+            	else if(Backgammon.gamePoint == 32)
+            		displayDoublingCube(361, 260, 32);
             }
             
         	} 
