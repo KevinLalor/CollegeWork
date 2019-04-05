@@ -200,10 +200,6 @@ public class Backgammon {
     	String choice = "";
     	boolean validAnswer = false;
     	
-    	while(validAnswer == false) {
-    		ui.promptDoubleCube(opponent);
-    		choice = ui.getString();
-    		ui.displayString("> " + choice);
     		while(validAnswer == false) {
     			ui.promptDoubleCube(opponent);
     			choice = ui.getString();
@@ -220,7 +216,6 @@ public class Backgammon {
     				ui.displayString("Invalid choice, please answer again");
     			}
     		}
-    	}
     }
     
 
