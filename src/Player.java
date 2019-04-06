@@ -56,4 +56,9 @@ public class Player {
     public void increaseScore() {
     	score += Backgammon.gamePoint;
     }
+    
+    public void resetScore()
+    {
+    	score = 0;
+    }
 }

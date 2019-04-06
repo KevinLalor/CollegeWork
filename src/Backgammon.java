@@ -115,31 +115,29 @@ public class Backgammon {
       }
       rollToStart();
       takeTurns();
-      if (board.isGameOver() && !(board.isMatchOver(players))) {
+      if (board.isGameOver()) {
           ui.displayGameWinner(board.getWinner());
-          gamePoint = 1;
-          gameCount++;
           if(board.getWinner() == players.get(0)) {
-          	players.get(0).increaseScore();
-          }
-          else {
-          	players.get(1).increaseScore();
-          }
-          TimeUnit.SECONDS.sleep(5);
-          board.reset();
+            	players.get(0).increaseScore();
+            }
+            else {
+            	players.get(1).increaseScore();
+            }
           ui.updateScore(players);
-          play();
-      }
-      if(board.isMatchOver(players)) {
-      	if(board.getWinner() == players.get(0)) {
-          	players.get(0).increaseScore();
+          if(!(board.isMatchOver(players)))
+          {
+        	  gamePoint = 1;
+              gameCount++;
+              TimeUnit.SECONDS.sleep(5);
+              board.reset();
+              play();
           }
-          else {
-          	players.get(1).increaseScore();
+          else
+          {
+            	System.out.println("Match is over");
+            	ui.displayMatchWinner(board.getWinner());
+            	rematch();
           }
-      	ui.updateScore(players);
-      	System.out.println("Match is over");
-      	rematch();
       }
   }
     
@@ -153,6 +151,10 @@ public class Backgammon {
       		if(choice.equals("yes") || choice.equals("Yes"))
       		{
       			gamePoint = 1;
+      			matchPoint = 0;
+      			players.get(0).resetScore();
+      			players.get(1).resetScore();
+      			ui.updateScore(players);
       			board.reset();
       			play();
       			validAnswer = true;
@@ -194,21 +196,28 @@ public class Backgammon {
         }
         
         if(DoubleCube) {
-        	DoubleCube(currentPlayer);
+        	Player opponent;
+        	if(currentPlayer == players.get(0))
+        		opponent = players.get(1);
+        	else
+        		opponent = players.get(0);
+        	
+        	DoubleCube(currentPlayer, opponent);
         }
         ui.display();
     }
     
-    private void DoubleCube(Player currentPlayer) throws InterruptedException {
+    private void DoubleCube(Player currentPlayer, Player opponent) throws InterruptedException {
     	String choice = "";
     	boolean validAnswer = false;
     	
     		while(validAnswer == false) {
-    			ui.promptDoubleCube();
+    			ui.promptDoubleCube(opponent);
     			choice = ui.getString();
     			ui.displayString("> " + choice);
     			if(choice.equals("yes") || choice.equals("Yes")) {
     				gamePoint *=2;
+    				ui.updateScore(players);
     				System.out.print(gamePoint);
     				validAnswer = true;
     			}

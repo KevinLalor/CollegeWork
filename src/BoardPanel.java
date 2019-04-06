@@ -13,7 +13,7 @@ class   BoardPanel extends JPanel {
     private static final int BORDER_TOP = 40, BORDER_BOTTOM = 75, BORDER_LEFT = 66, BORDER_RIGHT = 60;
     private static final int PIP_WIDTH = 47, BAR_WIDTH = 66;
     private static final int CHECKER_RADIUS = 16, CHECKER_DEPTH = 8, LINE_WIDTH = 2;  // must be even
-    private static final int DOUBLING_CUBE_WIDTH = 32, DOUBLING_CUBE_HEIGHT = 32;
+    private static final int DOUBLING_CUBE_WIDTH = 38, DOUBLING_CUBE_HEIGHT = 32;
     
     private Color[] checkerColors;
     private Board board;
@@ -54,12 +54,15 @@ class   BoardPanel extends JPanel {
     private void displayDoublingCube(int x, int y, int number)
     {
     	g2.setColor(Color.BLACK);
-    	g2.fillRect(x, y, DOUBLING_CUBE_WIDTH, DOUBLING_CUBE_HEIGHT);
+    	g2.fillRect(x-3, y, DOUBLING_CUBE_WIDTH, DOUBLING_CUBE_HEIGHT);
     	g2.setColor(Color.WHITE);
-    	g2.fillRect(x+2, y+2, DOUBLING_CUBE_WIDTH-(LINE_WIDTH+2), DOUBLING_CUBE_HEIGHT-(LINE_WIDTH+2));
+    	g2.fillRect(x-1, y+2, DOUBLING_CUBE_WIDTH-(LINE_WIDTH+2), DOUBLING_CUBE_HEIGHT-(LINE_WIDTH+2));
     	g2.setColor(Color.BLACK);
     	g2.setFont(new Font("Courier",Font.BOLD,32));
-    	g2.drawString(Integer.toString(number), x+7, y+25);
+    	if(number < 10)
+    		g2.drawString(Integer.toString(number), x+7, y+25);
+    	else
+    		g2.drawString(Integer.toString(number), x-3, y+25);
     }
 
     private void displayCheckerSide (int player, int x, int y) {
@@ -143,7 +146,6 @@ class   BoardPanel extends JPanel {
                 displayCheckerSide(player,x,y);
             }
             // Display doubling cube
-            displayDoublingCube(361, 260, 2);
             if(Backgammon.gamePoint > 1)
             {
             	if(Backgammon.gamePoint==2)
@@ -156,6 +158,8 @@ class   BoardPanel extends JPanel {
             		displayDoublingCube(361, 260, 16);
             	else if(Backgammon.gamePoint == 32)
             		displayDoublingCube(361, 260, 32);
+            	else if(Backgammon.gamePoint == 64)
+            		displayDoublingCube(361, 260, 64);
             }
             
         	} 

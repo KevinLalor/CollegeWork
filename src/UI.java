@@ -6,7 +6,7 @@ public class UI {
     // UI is the top level interface to the user interface
 
     private static final int FRAME_WIDTH = 1100;
-    private static final int FRAME_HEIGHT = 600;
+    private static final int FRAME_HEIGHT = 618;
 
     private final BoardPanel boardPanel;
     private final InfoPanel infoPanel;
@@ -79,7 +79,12 @@ public class UI {
     }
 
     public void displayGameWinner(Player player) {
-        displayString(player + " WINS THE GAME!!!");
+        displayString(player + " WINS THE GAME!");
+    }
+    
+    public void displayMatchWinner(Player player)
+    {
+    	displayString(player + " WINS THE MATCH!!!");
     }
     
     public void promptPlayAgain() {
