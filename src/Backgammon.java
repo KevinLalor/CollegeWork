@@ -68,7 +68,7 @@ public class Backgammon {
                 currentDice = currentPlayer.getDice();
                 //New code - Sean
                 // Call for the doubling cube
-                if((cubePlayer == -1 || cubePlayer != currentPlayer.getId()) && (gamePoint < 64)) {
+                if(((cubePlayer == -1) || (cubePlayer != currentPlayer.getId())) && (gamePoint < 64)) {
                     offerDoubleCube(currentPlayer);
                 }
             }
@@ -139,6 +139,11 @@ public class Backgammon {
           }
       	ui.updateScore(players);
       	System.out.println("Match is over");
+      	rematch();
+      }
+  }
+    
+    private void rematch() throws InterruptedException {
       	String choice = "";
       	boolean validAnswer = false;
       	while(validAnswer == false) {
@@ -161,12 +166,11 @@ public class Backgammon {
       			ui.displayString("Invalid choice, please answer again");
       		}
       	}
-      }
-  }
+    }
     
     // New code - Sean
     // Function called to prompt user to use the double cube or not
-    private void offerDoubleCube(Player currentPlayer) {
+    private void offerDoubleCube(Player currentPlayer) throws InterruptedException {
     	String choice = "";
     	boolean DoubleCube = false;
     	boolean validAnswer = false;
@@ -190,26 +194,35 @@ public class Backgammon {
         }
         
         if(DoubleCube) {
-        	if(players.hasNext())
-        		DoubleCube(players.next());
+        	DoubleCube(currentPlayer);
         }
         ui.display();
     }
     
-    private void DoubleCube(Player opponent) {
+    private void DoubleCube(Player currentPlayer) throws InterruptedException {
     	String choice = "";
     	boolean validAnswer = false;
     	
     		while(validAnswer == false) {
-    			ui.promptDoubleCube(opponent);
+    			ui.promptDoubleCube();
     			choice = ui.getString();
     			ui.displayString("> " + choice);
     			if(choice.equals("yes") || choice.equals("Yes")) {
     				gamePoint *=2;
+    				System.out.print(gamePoint);
     				validAnswer = true;
     			}
     			else if (choice.equals("no") || choice.equals("No")) {
     				// Insert code to forfeit game and declare winner
+    				ui.displayGameWinner(currentPlayer);
+    				if(currentPlayer == players.get(0)) {
+    					players.get(0).increaseScore();
+    				}
+    				else {
+    					players.get(1).increaseScore();
+    				}
+    				ui.updateScore(players);
+    				rematch();
     				validAnswer = true;
     			}
     			else {
