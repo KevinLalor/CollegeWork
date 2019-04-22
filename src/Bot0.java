@@ -33,22 +33,53 @@ public class Bot0 implements BotAPI {
     	int score[] = new int [possiblePlays.number()];
     	Arrays.fill(score, 0);
     	int i=0;
-    	// Applies score based on pip-count difference
+    	// Applies score based on pip-count difference and home board blocks
     	for(Play play: possiblePlays)
     	{
-    		score[i] += countDiff(play);
-    		score[i] += blockBlotDiff(play);
+    		score[i] = countDiff(play);
+    		//score[i] += homeBoardBlockDifference(play);
     		i++;
     	}
     	
+    	// Pick the move with the highest score
     	int command = 1;
     	for(i = 0; i < possiblePlays.number()-1; i++) {
     		if(score[i+1] > score[i]) {
 				command = i + 2;
 			} 
-    		System.out.println("Score " + (i+1) + ": " + score[i]);
+    		System.out.println("Score move " + (i+1) + ": " + score[i]);
     	}
         return Integer.toString(command);
+    }
+    
+    private int homeBoardBlockDifference(Play play)
+    {
+    	int [][] currentPipLocations = new int [2][26];
+    	int count = 0, i = 0, j = 0;
+    	for(i=0; i<2; i++)
+    	{
+    		for(j=0; j<26; j++)
+    		{
+    			currentPipLocations[i][j] = board.getNumCheckers(i, j);
+    		}
+    	}
+    	for (Move move : play) {
+    		if(currentPipLocations[me.getId()][move.getToPip()] == 1
+    				&& move.getToPip() < 8)
+    		{
+    			count += move.getToPip();
+    		}
+    		currentPipLocations[me.getId()][move.getFromPip()]--;
+            currentPipLocations[me.getId()][move.getToPip()]++;
+            System.out.println(move.getFromPip());
+    		}
+    	System.out.println("count is " + count);
+    	return count;
+    	}
+    	
+    public int checkImportance(int pip)
+    {
+    	return pip;
     }
 
     public String getDoubleDecision() {
@@ -65,7 +96,7 @@ public class Bot0 implements BotAPI {
     		Arrays.fill(row, 0);
     	}
     	int p0 = 0, p1 = 0;
-    	int i = 0, j = 0;
+    	int score = 0, i = 0, j = 0;
     	for(i=0; i<2; i++)
     	{
     		for(j=0; j<26; j++)
@@ -74,13 +105,13 @@ public class Bot0 implements BotAPI {
     		}
     	}
     	
-		p0 = updatePValue(me.getId(), currentPipLocations, play);
+    	int initialDifference = p1-p0;
+   		p0 = updatePValue(me.getId(), currentPipLocations, play);
 		p1 = updatePValue(opponent.getId(), currentPipLocations, play);
-		
-		System.out.println("p1 = " + p1);
-		System.out.println("p0 = " + p0);
-		
-		return p1-p0;
+		int differenceAfter = p1-p0;
+				
+		System.out.println("Difference: " + (differenceAfter-( Math.abs(initialDifference))));
+		return differenceAfter-(initialDifference);
     }
     
     // Returns the new pip count for the player after a play
@@ -106,8 +137,7 @@ public class Bot0 implements BotAPI {
     	return pValue;
     }
     
-    
-    //Check the difference in blocks of player and blots of opposing player
+  //Check the difference in blocks of player and blots of opposing player
     //Incomplete: need to check blocks on new board of each play
     public int blockBlotDiff(Play play) {
     	int blocks = 0, blots = 0;
@@ -154,4 +184,5 @@ public class Bot0 implements BotAPI {
     	}
     	return bValue;
     }
+
 }
