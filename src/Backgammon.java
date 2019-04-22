@@ -199,7 +199,7 @@ public class Backgammon {
     public static void main(String[] args) throws InterruptedException {
         Backgammon game = new Backgammon();
         game.setupBots(args);
-        game.playAMatch();
+        game.playAMatch(); 
 //        System.exit(0);
     }
 }
