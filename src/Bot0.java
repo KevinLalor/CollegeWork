@@ -36,10 +36,10 @@ public class Bot0 implements BotAPI {
     	// Applies score based on pip-count difference
     	for(Play play: possiblePlays)
     	{
-    		score[i] = countDiff(play);
+    		score[i] += countDiff(play);
+    		score[i] += blockBlotDiff(play);
     		i++;
     	}
-    	// score[blockBlotDiff(possiblePlays)]++;
     	
     	int command = 1;
     	for(i = 0; i < possiblePlays.number()-1; i++) {
@@ -65,7 +65,7 @@ public class Bot0 implements BotAPI {
     		Arrays.fill(row, 0);
     	}
     	int p0 = 0, p1 = 0;
-    	int score = 0, i = 0, j = 0;
+    	int i = 0, j = 0;
     	for(i=0; i<2; i++)
     	{
     		for(j=0; j<26; j++)
@@ -106,23 +106,52 @@ public class Bot0 implements BotAPI {
     	return pValue;
     }
     
+    
     //Check the difference in blocks of player and blots of opposing player
     //Incomplete: need to check blocks on new board of each play
-    public int blockBlotDiff(Plays possiblePlays) {
-    	int blocks = 0, blots = 0, diff = 0;
-    	int [][] currentPipLocations = board.get();
+    public int blockBlotDiff(Play play) {
+    	int blocks = 0, blots = 0;
+    	int [][] currentPipLocations = new int [2][26];
+    	for(int[] row:currentPipLocations) {
+    		Arrays.fill(row, 0);
+    	}
     	
-    	for(int i = 0; i < 25; i++) {
-    		if(currentPipLocations[me.getId()][i] > 1) {
-    			blocks++;
-    		}
-    		if(currentPipLocations[opponent.getId()][i] == 1) {
-    			blots++;
+    	int i =0, j = 0;
+    	for(i = 0; i < 2; i++) {
+    		for(j = 0; j < 26; j++) {
+    			currentPipLocations[i][j] = board.getNumCheckers(i, j);
     		}
     	}
     	
-    	diff = blocks-blots;
-    	return diff;
+    	blocks = updateBValue(me.getId(), currentPipLocations, play);
+    	blots = updateBValue(opponent.getId(), currentPipLocations, play);
+    	
+		System.out.println("blocks = " + blocks);
+		System.out.println("blots = " + blots);
+    	
+    	return blocks-blots;
     }
-
+    
+    //Returns the new block or blot for the player after the play
+    private int updateBValue(int player, int[][] pipLocations, Play play)
+    {	
+    	for (Move move : play) {
+    		pipLocations[me.getId()][move.getFromPip()]--;
+            pipLocations[me.getId()][move.getToPip()]++;
+            int opposingPlayerId = opponent.getId();
+            if (move.getToPip()<Board.BAR && move.getToPip()>Board.BEAR_OFF &&
+                    pipLocations[opposingPlayerId][25-move.getToPip()] == 1) {
+                pipLocations[opposingPlayerId][25-move.getToPip()]--;
+                pipLocations[opposingPlayerId][Board.BAR]++;
+            }
+    	}
+    	int i=0;
+    	int bValue=0;
+    	for(i = 0; i < 26; i++) {
+    		if(pipLocations[player][i] > 1) {
+    			bValue++;  
+    		}
+    	}
+    	return bValue;
+    }
 }
