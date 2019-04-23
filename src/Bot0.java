@@ -14,7 +14,7 @@ public class Bot0 implements BotAPI {
     private MatchAPI match;
     private InfoPanelAPI info;
     
-    private double countDiffWeight = 1, blockBlotDiffWeight = 1.5, homeBoardBlockDiffWeight = 1.5;
+    private double countDiffWeight = 1, blockBlotDiffWeight = 1, homeBoardBlockDiffWeight = 2;
 
     Bot0(PlayerAPI me, PlayerAPI opponent, BoardAPI board, CubeAPI cube, MatchAPI match, InfoPanelAPI info) {
         this.me = me;
@@ -66,10 +66,21 @@ public class Bot0 implements BotAPI {
     			currentPipLocations[i][j] = board.getNumCheckers(i, j);
     		}
     	}
+    	int initialHomeBoardCount = getHomeBlockCount(currentPipLocations);
     	for (Move move : play) {
+    		// Home board block
     		if(currentPipLocations[me.getId()][move.getToPip()] == 1
     				&& move.getToPip() < 8)
+    		{
     			count += move.getToPip();
+    			// Encourages checkers in 2nd quadrant to go for home blocks
+    			if(move.getFromPip() < 13 && move.getFromPip() > 7)
+    				count += 2;
+    			// Strongly discourages checker that is already on home block to move to another home block
+    			if(isHomeBlock(move.getFromPip()))
+    				count -= 5;
+    		}
+    		// Anchors
     		else if(currentPipLocations[me.getId()][move.getToPip()] == 1
     				&& move.getToPip() > 18)
     			count += Board.NUM_PIPS-(move.getToPip()+1);
@@ -78,13 +89,31 @@ public class Bot0 implements BotAPI {
             currentPipLocations[me.getId()][move.getToPip()]++;
             System.out.println(move.getFromPip());
     		}
+    	int afterHomeBoardCount = getHomeBlockCount(currentPipLocations);
+    	// Encourages bot to increase the number of home blocks it has
+    	if(afterHomeBoardCount-initialHomeBoardCount > 0)
+    		count += 2;
     	//System.out.println("count is " + count);
     	return count;
     	}
-    	
-    public int checkImportance(int pip)
+    
+    public int getHomeBlockCount(int[][] currentPipLocations)
     {
-    	return pip;
+    	int homeBlockCount=0;
+    	for(int i=0; i<8; i++)
+    	{
+    		if(currentPipLocations[me.getId()][i] > 1)
+    			homeBlockCount++;
+    	}
+    	return homeBlockCount;
+    }
+    
+    public boolean isHomeBlock(int pip)
+    {
+    	if(board.getNumCheckers(me.getId(), pip) > 1)
+    		return true;
+    	else
+    		return false;
     }
 
     public String getDoubleDecision() {
@@ -110,15 +139,9 @@ public class Bot0 implements BotAPI {
     		}
     	}
     	
-    	//int initialDifference = p1-p0;
    		p0 = updatePValue(me.getId(), currentPipLocations, play);
 		p1 = updatePValue(opponent.getId(), currentPipLocations, play);
-		//int differenceAfter = p1-p0;
-		
-		/*if(initialDifference < 0)
-			return differenceAfter+(Math.abs(initialDifference));
-		else
-			return differenceAfter-(initialDifference);*/
+
 		return p1-p0;
     }
     
@@ -137,7 +160,7 @@ public class Bot0 implements BotAPI {
     	}
     	int i=0;
     	int pValue=0;
-    	for(i = 0; i < 26; i++) {	
+    	for(i = 0; i < 26; i++) {	 
     		if(pipLocations[player][i] >= 1) {
     			pValue += i * pipLocations[player][i];  
     		}
@@ -145,8 +168,7 @@ public class Bot0 implements BotAPI {
     	return pValue;
     }
     
-  //Check the difference in blocks of player and blots of opposing player
-    //Incomplete: need to check blocks on new board of each play
+    //Check the difference in blocks and blots of player for play
     public int blockBlotDiff(Play play) {
     	int blocks = 0, blots = 0;
     	int [][] currentPipLocations = new int [2][26];
@@ -162,9 +184,6 @@ public class Bot0 implements BotAPI {
     	}
     	
     	blocks = updateBlockValue(me.getId(), currentPipLocations, play);
-    	//blots = updateBlotValue(opponent.getId(), currentPipLocations, play);
-    	
-		//System.out.println("blocks = " + blocks);
     	
     	return blocks;
     }
