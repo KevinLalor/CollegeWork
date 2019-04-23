@@ -40,7 +40,7 @@ public class Bot0 implements BotAPI {
     	{
     		score[i] += countDiff(play)*countDiffWeight;
     		score[i] += blockBlotDiff(play)*blockBlotDiffWeight;
-    		score[i] += homeBoardBlockDiff(play)*homeBoardBlockDiffWeight;
+    		score[i] += homeBoardAndAnchorBlock(play)*homeBoardBlockDiffWeight;
     		i++;
     	}
     	
@@ -55,7 +55,7 @@ public class Bot0 implements BotAPI {
         return Integer.toString(command);
     }
     
-    private int homeBoardBlockDiff(Play play)
+    private int homeBoardAndAnchorBlock(Play play)
     {
     	int [][] currentPipLocations = new int [2][26];
     	int count = 0, i = 0, j = 0;
@@ -69,9 +69,11 @@ public class Bot0 implements BotAPI {
     	for (Move move : play) {
     		if(currentPipLocations[me.getId()][move.getToPip()] == 1
     				&& move.getToPip() < 8)
-    		{
     			count += move.getToPip();
-    		}
+    		else if(currentPipLocations[me.getId()][move.getToPip()] == 1
+    				&& move.getToPip() > 18)
+    			count += Board.NUM_PIPS-(move.getToPip()+1);
+    		
     		currentPipLocations[me.getId()][move.getFromPip()]--;
             currentPipLocations[me.getId()][move.getToPip()]++;
             System.out.println(move.getFromPip());
