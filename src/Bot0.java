@@ -13,6 +13,8 @@ public class Bot0 implements BotAPI {
     private CubeAPI cube;
     private MatchAPI match;
     private InfoPanelAPI info;
+    
+    private double countDiffWeight = 1, blockBlotDiffWeight = 1.5, homeBoardBlockDiffWeight = 1.5;
 
     Bot0(PlayerAPI me, PlayerAPI opponent, BoardAPI board, CubeAPI cube, MatchAPI match, InfoPanelAPI info) {
         this.me = me;
@@ -33,11 +35,12 @@ public class Bot0 implements BotAPI {
     	int score[] = new int [possiblePlays.number()];
     	Arrays.fill(score, 0);
     	int i=0;
-    	// Applies score based on pip-count difference and home board blocks
+    	// Applies score based on certain features
     	for(Play play: possiblePlays)
     	{
-    		score[i] = countDiff(play);
-    		//score[i] += homeBoardBlockDifference(play);
+    		score[i] += countDiff(play)*countDiffWeight;
+    		score[i] += blockBlotDiff(play)*blockBlotDiffWeight;
+    		score[i] += homeBoardBlockDiff(play)*homeBoardBlockDiffWeight;
     		i++;
     	}
     	
@@ -46,13 +49,13 @@ public class Bot0 implements BotAPI {
     	for(i = 0; i < possiblePlays.number()-1; i++) {
     		if(score[i+1] > score[i]) {
 				command = i + 2;
-			} 
+			}  
     		System.out.println("Score move " + (i+1) + ": " + score[i]);
     	}
         return Integer.toString(command);
     }
     
-    private int homeBoardBlockDifference(Play play)
+    private int homeBoardBlockDiff(Play play)
     {
     	int [][] currentPipLocations = new int [2][26];
     	int count = 0, i = 0, j = 0;
@@ -73,7 +76,7 @@ public class Bot0 implements BotAPI {
             currentPipLocations[me.getId()][move.getToPip()]++;
             System.out.println(move.getFromPip());
     		}
-    	System.out.println("count is " + count);
+    	//System.out.println("count is " + count);
     	return count;
     	}
     	
@@ -105,13 +108,16 @@ public class Bot0 implements BotAPI {
     		}
     	}
     	
-    	int initialDifference = p1-p0;
+    	//int initialDifference = p1-p0;
    		p0 = updatePValue(me.getId(), currentPipLocations, play);
 		p1 = updatePValue(opponent.getId(), currentPipLocations, play);
-		int differenceAfter = p1-p0;
-				
-		System.out.println("Difference: " + (differenceAfter-( Math.abs(initialDifference))));
-		return differenceAfter-(initialDifference);
+		//int differenceAfter = p1-p0;
+		
+		/*if(initialDifference < 0)
+			return differenceAfter+(Math.abs(initialDifference));
+		else
+			return differenceAfter-(initialDifference);*/
+		return p1-p0;
     }
     
     // Returns the new pip count for the player after a play
@@ -153,19 +159,34 @@ public class Bot0 implements BotAPI {
     		}
     	}
     	
-    	blocks = updateBValue(me.getId(), currentPipLocations, play);
-    	blots = updateBValue(opponent.getId(), currentPipLocations, play);
+    	blocks = updateBlockValue(me.getId(), currentPipLocations, play);
+    	//blots = updateBlotValue(opponent.getId(), currentPipLocations, play);
     	
-		System.out.println("blocks = " + blocks);
-		System.out.println("blots = " + blots);
+		//System.out.println("blocks = " + blocks);
     	
-    	return blocks-blots;
+    	return blocks;
     }
     
-    //Returns the new block or blot for the player after the play
-    private int updateBValue(int player, int[][] pipLocations, Play play)
+    //Returns the new block/blot difference for player
+    private int updateBlockValue(int player, int[][] pipLocations, Play play)
     {	
+    	int blockValue=0, blotValue=0;
     	for (Move move : play) {
+    		if(pipLocations[me.getId()][move.getToPip()] == 1 && pipLocations[me.getId()][move.getFromPip()] == 1)
+    		{
+    			blotValue--;
+    			blockValue++;
+    		}
+    		else if(pipLocations[me.getId()][move.getToPip()] > 1 && pipLocations[me.getId()][move.getFromPip()] == 1)
+    			blotValue--;
+    		else if(pipLocations[me.getId()][move.getToPip()] == 0 && pipLocations[me.getId()][move.getFromPip()] == 2)
+    			blotValue += 2;
+    		else if(pipLocations[me.getId()][move.getToPip()] > 1 && pipLocations[me.getId()][move.getFromPip()] == 2)
+    			blotValue++;
+    		else if(pipLocations[me.getId()][move.getToPip()] == 0 && pipLocations[me.getId()][move.getFromPip()] > 2)
+    			blotValue++;
+    		else if(pipLocations[me.getId()][move.getToPip()] == 1 && pipLocations[me.getId()][move.getFromPip()] > 2)
+    			blockValue++;
     		pipLocations[me.getId()][move.getFromPip()]--;
             pipLocations[me.getId()][move.getToPip()]++;
             int opposingPlayerId = opponent.getId();
@@ -175,14 +196,8 @@ public class Bot0 implements BotAPI {
                 pipLocations[opposingPlayerId][Board.BAR]++;
             }
     	}
-    	int i=0;
-    	int bValue=0;
-    	for(i = 0; i < 26; i++) {
-    		if(pipLocations[player][i] > 1) {
-    			bValue++;  
-    		}
-    	}
-    	return bValue;
+
+    	return blockValue-blotValue;
     }
 
 }
