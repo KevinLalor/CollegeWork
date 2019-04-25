@@ -26,7 +26,7 @@ public class Bot0 implements BotAPI {
     }
 
     public String getName() {
-        return "Bot0"; // must match the class name
+        return "GackBammon"; // must match the class name
     }
 
     //Gives score to which move is best
@@ -35,6 +35,9 @@ public class Bot0 implements BotAPI {
     	int score[] = new int [possiblePlays.number()];
     	Arrays.fill(score, 0);
     	int i=0;
+    	if(shouldOfferDouble() == 1) {
+    		return "Double";
+    	}
     	// Applies score based on certain features
     	for(Play play: possiblePlays)
     	{
@@ -50,9 +53,91 @@ public class Bot0 implements BotAPI {
     		if(score[i+1] > score[i]) {
 				command = i + 2;
 			}  
-    		System.out.println("Score move " + (i+1) + ": " + score[i]);
+    		//System.out.println("Score move " + (i+1) + ": " + score[i]);
     	}
         return Integer.toString(command);
+    }
+    
+    public String getDoubleDecision() {
+        // Add your code here
+    	if(shouldDouble() == 1) {
+    		return "y";
+    	}
+    	else {
+    		return "n";
+    	}
+    }
+    
+    public int shouldOfferDouble() {
+    	int [][] currentPipLocations = new int [2][26];
+    	double totalMyCheckers = 0, totalOppCheckers = 0;
+    	double myCheckersInRange = 0, oppCheckersInRange = 0;
+    	double myChance = 0.0;
+    	
+    	//Assigns positions of current pips on the board
+    	for(int i=0; i<2; i++) {
+    		for(int j=0; j<26; j++) {
+    			currentPipLocations[i][j] = board.getNumCheckers(i, j);
+    			if(i == me.getId() && currentPipLocations[i][j] > 0) {
+    				totalMyCheckers += currentPipLocations[i][j];
+    				if(j < 12 && currentPipLocations[i][j] > 0) {
+    					myCheckersInRange+= 1*currentPipLocations[i][j];
+    				}
+    			}
+    			else {
+    				totalOppCheckers += currentPipLocations[i][j];
+    				if(j < 12 && currentPipLocations[i][j] > 0) {
+    					oppCheckersInRange+= currentPipLocations[i][j];
+    				}
+    			}
+    		}
+    	}
+    	
+    	myChance = (myCheckersInRange/totalMyCheckers)*100.0;
+    	System.out.println("totalMyCheckers: "+ totalMyCheckers);
+    	System.out.println("myCheckersInRange: "+ myCheckersInRange);
+    	System.out.println("My Chance: "+myChance);
+    	
+    	if(myChance < 67 || (myChance > 80 && oppCheckersInRange > 0) || (myChance < 51 && (match.getLength() - me.getScore() == 2) && (match.getLength() - opponent.getScore() == 2))) {
+    		return 0;
+    	}
+    	else {
+    		return 1;
+    	}
+    }
+    
+    public int shouldDouble() {
+    	int [][] currentPipLocations = new int [2][26];
+    	double totalMyCheckers = 0, totalOppCheckers = 0;
+    	double myCheckersInRange = 0, oppCheckersInRange = 0;
+    	double oppChance = 0;
+    	
+    	for(int i=0; i<2; i++) {
+    		for(int j=0; j<26; j++) {
+    			currentPipLocations[i][j] = board.getNumCheckers(i, j);
+    			if(i == me.getId() && currentPipLocations[i][j] > 0) {
+    				totalMyCheckers += currentPipLocations[i][j];
+    				if(j <= 12 && currentPipLocations[i][j] > 0) {
+    					myCheckersInRange++;
+    				}
+    			}
+    			else {
+    				totalOppCheckers += currentPipLocations[i][j];
+    				if(j <= 12 && currentPipLocations[i][j] > 0) {
+    					oppCheckersInRange++;
+    				}
+    			}
+    		}
+    	}
+    	
+    	oppChance = (oppCheckersInRange/totalOppCheckers)*100;
+    	
+    	if((oppChance > 65 && oppChance < 76) || (oppChance > 49 && oppChance < 76 && (match.getLength()- me.getScore() == 2) && (match.getLength() - opponent.getScore() == 2))) {
+    		return 1;
+    	}
+    	else {
+    		return 0;
+    	}
     }
     
     private int homeBoardAndAnchorBlock(Play play)
@@ -87,7 +172,7 @@ public class Bot0 implements BotAPI {
     		
     		currentPipLocations[me.getId()][move.getFromPip()]--;
             currentPipLocations[me.getId()][move.getToPip()]++;
-            System.out.println(move.getFromPip());
+           // System.out.println(move.getFromPip());
     		}
     	int afterHomeBoardCount = getHomeBlockCount(currentPipLocations);
     	// Encourages bot to increase the number of home blocks it has
@@ -114,11 +199,6 @@ public class Bot0 implements BotAPI {
     		return true;
     	else
     		return false;
-    }
-
-    public String getDoubleDecision() {
-        // Add your code here
-        return "n";
     }
     
     /*Return pip count difference betweeen opponent and bot.
